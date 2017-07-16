@@ -32,6 +32,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 
 import com.example.demo.batch.mapper.DemoFieldSetMapper;
 import com.example.demo.batch.processor.DemoItemProcessor;
@@ -116,22 +117,15 @@ public class CSVBatchJob {
 	@Bean
 	public FlatFileItemWriter<Employee> writer() {
 		FlatFileItemWriter<Employee> writer = new FlatFileItemWriter<Employee>();
-		writer.setResource(new ClassPathResource("outputFile.txt"));
-		writer.setName("Something");
+		System.out.println("");
+		writer.setResource(new FileSystemResource("outputFile.txt"));
+//		writer.setName("Something");
 		writer.setLineAggregator(lineAggregator());
 //		writer.setAppendAllowed(true);
 //		writer.setShouldDeleteIfExists(true);
 //		writer.setLineSeparator(",");
-		writer.setHeaderCallback(new FileHeaderCallBack());
-		writer.setFooterCallback(new FlatFileFooterCallback() {
-			
-			@Override
-			public void writeFooter(Writer writer) throws IOException {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		writer.close();
+//		writer.setHeaderCallback(new FileHeaderCallBack());
+//		writer.close();
 		return writer;
 	}
 	
@@ -142,7 +136,7 @@ public class CSVBatchJob {
 	public LineAggregator<Employee> lineAggregator() {
 		DelimitedLineAggregator<Employee> aggr = new DelimitedLineAggregator<Employee>();
 		aggr.setDelimiter("|");
-		aggr.setFieldExtractor(new PassThroughFieldExtractor());
+		aggr.setFieldExtractor(fieldExtractor());
 		return aggr;
 	}
 	// end::readerwriterprocessor[]
