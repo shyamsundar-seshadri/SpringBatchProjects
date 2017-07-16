@@ -48,6 +48,7 @@ public class DemoController {
 			System.out.println("*********** Still running.... **************");
 			Thread.sleep(1000);
 			}
+		jobExecution.stop();
 		return "Success";
 	}
 }
